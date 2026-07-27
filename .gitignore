@@ -1,0 +1,19 @@
+# OS junk
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+desktop.ini
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Editor folders
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (only relevant if a build step is ever added — not tracked today)
+node_modules/
