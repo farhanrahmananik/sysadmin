@@ -662,6 +662,24 @@ section[id],#top{scroll-margin-top:80px}
 .foot-mark{transition:-webkit-text-stroke-color 1.1s ease}
 .foot-mark:hover{-webkit-text-stroke-color:rgba(217,164,65,.5)}
 
+/* legal pages (Impressum, Datenschutzerklärung) */
+.legal-page{padding-top:clamp(46px,7vw,72px)}
+.legal-page h1{overflow-wrap:break-word}
+.legal{max-width:68ch;margin-top:clamp(24px,4vw,36px)}
+.legal h2{font-size:clamp(19px,2.1vw,25px);margin-top:clamp(32px,4vw,48px)}
+.legal h2:first-child{margin-top:0}
+.legal p{margin-top:14px;color:var(--fog-bright);line-height:1.7;font-size:15px}
+.legal p:first-child{margin-top:0}
+.legal ul{margin-top:14px;padding-left:20px;color:var(--fog-bright);line-height:1.7;font-size:15px}
+.legal li{margin-top:6px}
+.legal a{color:var(--signal);text-decoration:underline;text-underline-offset:3px}
+.legal a:hover{color:var(--paper)}
+.legal .en-summary{
+  border:1px solid var(--line-soft);padding:20px 24px;margin-bottom:clamp(32px,5vw,48px);
+  color:var(--fog);font-size:14px;line-height:1.7;
+}
+.legal .en-summary strong{color:var(--fog-bright)}
+
 /* reveal */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 

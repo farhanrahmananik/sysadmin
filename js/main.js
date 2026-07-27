@@ -47,33 +47,41 @@
   }
 
   /* ---- marquee: duplicated so the loop is seamless ---- */
-  var stack = ['Active Directory','Hyper-V','Exchange Server','SQL Server','PowerShell','RHEL','SELinux',
-               'Nginx','Laravel 12','PHP 8','MySQL','Docker','AWS','Wireshark','Python','Bash'];
   var track = document.getElementById('track');
-  track.innerHTML = stack.concat(stack).map(function(s){ return '<span>'+s+'</span>'; }).join('');
+  if(track){
+    var stack = ['Active Directory','Hyper-V','Exchange Server','SQL Server','PowerShell','RHEL','SELinux',
+                 'Nginx','Laravel 12','PHP 8','MySQL','Docker','AWS','Wireshark','Python','Bash'];
+    track.innerHTML = stack.concat(stack).map(function(s){ return '<span>'+s+'</span>'; }).join('');
+  }
 
   /* ---- Berlin clock ---- */
   var clock = document.getElementById('clock');
-  function tick(){
-    clock.textContent = new Intl.DateTimeFormat('en-GB',{
-      timeZone:'Europe/Berlin', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
-    }).format(new Date());
+  if(clock){
+    (function(){
+      function tick(){
+        clock.textContent = new Intl.DateTimeFormat('en-GB',{
+          timeZone:'Europe/Berlin', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+        }).format(new Date());
+      }
+      tick(); setInterval(tick, 1000);
+    })();
   }
-  tick(); setInterval(tick, 1000);
 
   /* ---- hero console line ---- */
   var out = document.getElementById('termOut');
-  var text = 'systems engineer · security · laravel — available';
-  if(reduce){
-    out.innerHTML = '<span class="ok">→</span> ' + text;
-  } else {
-    var i = 0;
-    out.innerHTML = '<span class="cursor"></span>';
-    var typer = setInterval(function(){
-      i++;
-      out.innerHTML = '<span class="ok">→</span> ' + text.slice(0,i) + '<span class="cursor"></span>';
-      if(i >= text.length){ clearInterval(typer); }
-    }, 34);
+  if(out){
+    var text = 'systems engineer · security · laravel — available';
+    if(reduce){
+      out.innerHTML = '<span class="ok">→</span> ' + text;
+    } else {
+      var i = 0;
+      out.innerHTML = '<span class="cursor"></span>';
+      var typer = setInterval(function(){
+        i++;
+        out.innerHTML = '<span class="ok">→</span> ' + text.slice(0,i) + '<span class="cursor"></span>';
+        if(i >= text.length){ clearInterval(typer); }
+      }, 34);
+    }
   }
 
   /* ---- scroll reveal ---- */
@@ -86,34 +94,38 @@
 
   /* ---- contact form -> mailto ---- */
   var form = document.getElementById('cform');
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    if(!form.reportValidity()) return;
-    var v = function(id){ return document.getElementById(id).value.trim(); };
-    var subject = encodeURIComponent(v('f-subject'));
-    var body = encodeURIComponent(
-      'Name: ' + v('f-name') + '\nEmail: ' + v('f-email') + '\n\n' + v('f-message')
-    );
-    window.location.href = 'mailto:farhan.anik@gmail.com?subject=' + subject + '&body=' + body;
-  });
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(!form.reportValidity()) return;
+      var v = function(id){ return document.getElementById(id).value.trim(); };
+      var subject = encodeURIComponent(v('f-subject'));
+      var body = encodeURIComponent(
+        'Name: ' + v('f-name') + '\nEmail: ' + v('f-email') + '\n\n' + v('f-message')
+      );
+      window.location.href = 'mailto:farhan.anik@gmail.com?subject=' + subject + '&body=' + body;
+    });
+  }
 
   /* ---- scroll progress ---- */
   var prog = document.getElementById('progress');
-  var ticking = false;
-  window.addEventListener('scroll', function(){
-    if(ticking) return;
-    ticking = true;
-    requestAnimationFrame(function(){
-      var h = document.documentElement;
-      var p = h.scrollTop / (h.scrollHeight - h.clientHeight);
-      prog.style.width = (p * 100) + '%';
-      ticking = false;
-    });
-  }, {passive:true});
+  if(prog){
+    var ticking = false;
+    window.addEventListener('scroll', function(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        var h = document.documentElement;
+        var p = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        prog.style.width = (p * 100) + '%';
+        ticking = false;
+      });
+    }, {passive:true});
+  }
 
   /* ---- hero spotlight follows the cursor ---- */
   var hero = document.getElementById('hero');
-  if(!reduce && window.matchMedia('(pointer: fine)').matches){
+  if(hero && !reduce && window.matchMedia('(pointer: fine)').matches){
     hero.addEventListener('mousemove', function(e){
       var r = hero.getBoundingClientRect();
       hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
@@ -145,7 +157,8 @@
   window.addEventListener('blur', function(){ document.title = '⚠ Connection idle — Farhan'; });
   window.addEventListener('focus', function(){ document.title = baseTitle; });
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+  var yearEl = document.getElementById('year');
+  if(yearEl) yearEl.textContent = new Date().getFullYear();
 
   /* ---- console easter egg ---- */
   console.log(

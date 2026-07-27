@@ -25,6 +25,8 @@ the two external files. See **File structure** below.
 
 ```
 index.html              markup only — head, header, hero, sections, footer
+impressum.html          legal notice (§ 5 DDG) — see Legal pages below
+datenschutz.html        privacy policy (DSGVO) — see Legal pages below
 css/style.css           all CSS (was the inline <style> block)
 js/main.js              all JS (was the inline <script> block), loaded with defer
 assets/
@@ -154,9 +156,9 @@ Quality floor, must survive every change:
 4. **Screenshots.** Each project card should carry one 16:9 screenshot above the
    title. Lazy-load these ones, keep them under 200KB each (WebP), and give every
    image real alt text. This is the single highest-impact change on the page.
-5. **Impressum and Datenschutzerklärung.** Two extra pages, same design system,
-   linked from the footer. Required under §5 DDG if the site is used for job
-   seeking on a German domain. Do not skip.
+5. **Impressum and Datenschutzerklärung — done.** `impressum.html` and
+   `datenschutz.html`, same design system, linked from the footer on every
+   page. See **Legal pages** below before editing either.
 6. **Meta and social.** Add `og:title`, `og:description`, `og:image` (a 1200×630
    card built from the wordmark), and JSON-LD `Person` schema. (Favicon is done —
    see Design system below.)
@@ -266,3 +268,38 @@ are recoloured flat `#AEB4BE` so RHCSA/RHCE/ZCPE/BTU/Primeasia read as one famil
   article, and isn't licensed for reuse here. If either institution's logo ever
   needs updating, re-derive from a properly licensed source and keep the same
   flat-`#AEB4BE`-on-transparent treatment.
+
+## Legal pages
+
+`impressum.html` and `datenschutz.html` reuse the exact same head/header/footer
+as `index.html` (same favicon links, same stylesheet, same `js/main.js`), with
+two deliberate differences: the header nav links point to `index.html#about`
+etc. (not bare `#about`) since these are separate pages, and the "Back to
+top ↑" footer link becomes "Back to home ↑" pointing at `index.html`. Content
+lives in `.legal` (a plain readable-width prose column — new CSS, not reused
+from elsewhere, since nothing else on the site needed dense multi-paragraph
+text) inside the normal `.section`/`.wrap` scaffolding, with a bordered
+`.en-summary` box up top on both pages (plain English TL;DR before the German
+legal text, per the brief). Neither page uses `.rv` scroll-reveal — legal text
+should just be visible, not gated behind a scroll animation.
+
+`js/main.js` had to be made defensive for this: several blocks
+(`getElementById('track')`/`'clock'`/`'termOut'`, `document.getElementById('hero')`,
+`document.getElementById('cform')`) previously assumed those elements always
+exist and would throw on any page that lacks them, which — since the script
+runs as one synchronous IIFE — would silently kill everything *after* the
+first missing element (scroll progress, footer year, the console easter egg,
+etc.). Every such lookup is now null-checked before use. Keep this pattern for
+any future element lookup in `main.js`: don't assume a page has hero/marquee/
+contact-form/tech-stack markup just because `index.html` does.
+
+The Impressum's postal address came directly from the user — never invent or
+placeholder one in a legal notice. The Datenschutzerklärung's core honest claim
+(no cookies, no analytics, no third-party requests, no server-side storage,
+contact form is `mailto:`-only) is only true *because* of the performance
+pass (Fonts / Tech stack section above) — if a third-party request is ever
+reintroduced (a new CDN icon, an embed, an analytics snippet), the privacy
+policy's §2/§6/§7 text becomes inaccurate and must be updated in the same
+commit. The GitHub Pages hosting disclosure (§3 — GitHub Inc., USA, server-log
+data including IP addresses) is the one processing activity that's genuinely
+unavoidable for any hosted site and must stay regardless of what else changes.
