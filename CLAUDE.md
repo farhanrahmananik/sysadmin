@@ -14,11 +14,12 @@ run enterprise systems *and* build the applications on them, then give them the 
 the repositories and a way to make contact.
 
 Current state: split into three files — `index.html`, `css/style.css`, `js/main.js` —
-no build step, no bundler, no dependencies except Google Fonts. Open `index.html` in
-a browser and it works: the stylesheet is linked in `<head>`, the script is loaded
-with `defer` at the end of `<body>`. Inline `onerror` fallback handlers on `<img>`
-tags (icon and thumbnail fallbacks) stay inline in the HTML by design — everything
-else lives in the two external files. See **File structure** below.
+no build step, no bundler, and (since the performance pass) no third-party requests
+at all: fonts and tech-stack icons are self-hosted. Open `index.html` in a browser
+and it works: the stylesheet is linked in `<head>`, the script is loaded with `defer`
+at the end of `<body>`. Inline `onerror` fallback handlers on `<img>` tags (icon and
+thumbnail fallbacks) stay inline in the HTML by design — everything else lives in
+the two external files. See **File structure** below.
 
 ## File structure
 
@@ -27,9 +28,10 @@ index.html              markup only — head, header, hero, sections, footer
 css/style.css           all CSS (was the inline <style> block)
 js/main.js              all JS (was the inline <script> block), loaded with defer
 assets/
-  images/projects/      six project screenshot/thumbnail PNGs
-  images/stack/         offline fallback SVGs for tech-stack icons (optional)
-  images/logos/         btu.png, primeasia.png — processed university logos (see below)
+  fonts/                 self-hosted woff2 subsets (latin + latin-ext) — see Fonts below
+  images/projects/       six project screenshot/thumbnail PNGs
+  images/stack/          all 41 tech-stack icons, self-hosted (see Tech stack section)
+  images/logos/          btu.png, primeasia.png — processed university logos (see below)
 Md_Farhan_Rahman_Anik_CV.pdf
 ```
 
@@ -158,9 +160,11 @@ Quality floor, must survive every change:
 6. **Meta and social.** Add `og:title`, `og:description`, `og:image` (a 1200×630
    card built from the wordmark), and JSON-LD `Person` schema. (Favicon is done —
    see Design system below.)
-7. **Performance pass.** Self-host the three font families as `woff2` subsets with
-   `font-display: swap` and drop the Google Fonts request. Target: Lighthouse 95+
-   on all four categories.
+7. **Performance pass — done.** Fonts self-hosted as `woff2` subsets with
+   `font-display: swap` (Google Fonts request dropped); all 41 tech-stack icons
+   self-hosted too (both CDNs dropped). Zero third-party requests on the page —
+   see **Fonts** and **Tech stack section** below before adding anything that
+   would reintroduce one. Lighthouse 95+ target not yet independently verified.
 
 ## Later, only if wanted
 
@@ -170,31 +174,53 @@ Quality floor, must survive every change:
 
 ## Rules for edits
 
-- No CSS frameworks. No jQuery. No build tooling unless task 7 is reached.
+- No CSS frameworks. No jQuery. No build tooling — task 7 (performance pass) is
+  done and didn't need any; the font/icon self-hosting was done with one-off
+  scripts, not a permanent build step. Keep it that way.
 - Keep it to `index.html` + `css/style.css` + `js/main.js` + `assets/` — no bundler,
   no npm dependency, no further splitting unless the project genuinely outgrows this.
 - Do not add stock illustrations, gradient blobs, glassmorphism, or a hero video.
 - Every claim on the page must be defensible in an interview. If a project's copy
   overstates what was built, cut the copy — not the interview.
 
+## Fonts
+
+All three families (Archivo, IBM Plex Sans, IBM Plex Mono) are self-hosted —
+`assets/fonts/*.woff2`, `@font-face` rules at the top of `css/style.css`, no
+Google Fonts request anywhere. Only `latin` and `latin-ext` subsets were kept
+(the original Google CSS also serves `vietnamese`/`cyrillic`/`greek`, which are
+unnecessary here and were dropped). Each weight has two `@font-face` blocks
+(one per subset, distinguished by `unicode-range`) — that's why there are 18
+blocks for 9 weight/family combinations, not 9. Archivo and IBM Plex Sans are
+variable fonts on Google's end, so several weights legitimately point at the
+same physical file per subset (e.g. Archivo 500/600/700/800 latin all share one
+file) — that's correct, not a bug; don't "fix" it by duplicating files per
+weight. To add a weight: fetch
+`https://fonts.googleapis.com/css2?family=<Family>:wght@<weight>` with a
+browser user-agent (Google only serves `woff2` to modern UAs), keep just the
+`latin`/`latin-ext` blocks, download the referenced `.woff2` into
+`assets/fonts/`, and append the block to `css/style.css`.
+
 ## Tech stack section
 
 The Skills section is a logo tile grid (`.stack` / `.tile`): 48 tiles with a
-mono label each. Icons come from two CDNs: `cdn.simpleicons.org/<slug>` (brand
-colors, no color param) and, for logos Simple Icons dropped (AWS, Oracle,
-PowerShell, Windows, SSH, Hyper-V, SQL Server, Azure),
-`cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/<name>/<name>-original.svg`.
-Tiles use `box-shadow: 0 0 0 1px var(--line-soft)` for hairlines (NOT a grid
-background) so a partially-filled last row leaves no dark patch. Two tile kinds:
-icon tiles (img with onerror fallback to the `.fb` abbreviation) and nine
-custom inline SVG glyphs (`.gly`, 24×24 viewBox, 1.5 stroke, currentColor with
-exactly one `var(--signal)` amber accent each) for tech with no logo anywhere —
-AD, GPO, Exchange, Failover Cluster, DNS/DHCP, SELinux, Firewalld, IAM,
-Incident Handling. These are original icons drawn for this site; keep new
-glyphs in the same family (same stroke, one amber detail, no fills except
-tiny amber dots). The letter tiles carry recruiter-relevant
-keywords; never remove them in favor of logo-only tiles. Icons require
-internet; for offline, download SVGs to `assets/images/stack/` and update srcs.
+mono label each. All icons are self-hosted in `assets/images/stack/` (41 files
+— no `cdn.simpleicons.org` or `cdn.jsdelivr.net` requests remain anywhere on
+the page). Tiles use `box-shadow: 0 0 0 1px var(--line-soft)` for hairlines
+(NOT a grid background) so a partially-filled last row leaves no dark patch.
+Two tile kinds: icon tiles (img with onerror fallback to the `.fb`
+abbreviation) and nine custom inline SVG glyphs (`.gly`, 24×24 viewBox, 1.5
+stroke, currentColor with exactly one `var(--signal)` amber accent each) for
+tech with no logo anywhere — AD, GPO, Exchange, Failover Cluster, DNS/DHCP,
+SELinux, Firewalld, IAM, Incident Handling. These are original icons drawn for
+this site; keep new glyphs in the same family (same stroke, one amber detail,
+no fills except tiny amber dots). The letter tiles carry recruiter-relevant
+keywords; never remove them in favor of logo-only tiles. To add a tile with a
+real logo: download the SVG from its source into `assets/images/stack/`
+(matching filename pattern: plain slug for Simple Icons, e.g. `docker.svg`;
+`<slug>-<HEXCOLOR>.svg` for a recolored Simple Icons variant, e.g.
+`redhat-AEB4BE.svg`; the devicon filename as-is for devicon sources, e.g.
+`powershell-original.svg`) — never link back to a CDN.
 
 Every tile also carries `data-cat="web|systems|tools|cloud|security"` — required
 by the mobile category filter (`.stack-filter`, `js/main.js`) even though desktop
@@ -224,8 +250,12 @@ Every entry in Education and Certifications carries a small monochrome logo via
 `.cred-logo-row` (flex, 14px gap, vertically centred, no borders/hover — `img` +
 a `div` with the existing `cred-when`/`cred-what`/`cred-where` lines). All logos
 are recoloured flat `#AEB4BE` so RHCSA/RHCE/ZCPE/BTU/Primeasia read as one family:
-- RHCSA, RHCE, ZCPE: `https://cdn.simpleicons.org/<redhat|zend>/AEB4BE` — no local
-  file, Simple Icons renders the recolour via the URL itself.
+- RHCSA, RHCE: `assets/images/stack/redhat-AEB4BE.svg`. ZCPE:
+  `assets/images/stack/zend-AEB4BE.svg`. Both self-hosted since the performance
+  pass (was `cdn.simpleicons.org/<slug>/AEB4BE`, now dropped like every other
+  CDN icon — see Tech stack section). To recolor a Simple Icons logo again,
+  fetch `https://cdn.simpleicons.org/<slug>/<HEXCOLOR-no-#>` once and save the
+  SVG locally; don't link the CDN URL directly.
 - BTU, Primeasia: local files at `assets/images/logos/{btu,primeasia}.png` —
   cropped to content, recoloured pixel-by-pixel (alpha kept as the shape mask),
   180px tall source, displayed at `.cred-logo-edu{height:30px}` (certs are 26px,
