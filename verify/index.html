@@ -56,7 +56,7 @@
 
   /* ---------- header ---------- */
 
-  .top{padding:72px 0 40px}
+  .top{padding:88px 0 44px}
 
   .eyebrow{
     font-family:var(--mono);
@@ -64,21 +64,53 @@
     letter-spacing:.16em;
     text-transform:uppercase;
     color:var(--muted);
-    margin:0 0 20px;
+    margin:0 0 26px;
   }
   .eyebrow span{color:var(--accent)}
 
   h1{
     font-family:var(--display);
     font-weight:700;
-    font-size:clamp(30px,6vw,46px);
-    line-height:1.08;
-    letter-spacing:-.02em;
-    margin:0 0 20px;
+    font-size:clamp(40px,10vw,78px);
+    line-height:.94;
+    letter-spacing:-.035em;
+    text-transform:uppercase;
+    margin:0;
+  }
+  h1 span{display:block}
+  .h1-b{color:var(--muted)}
+
+  @supports (-webkit-text-stroke:1px #000){
+    .h1-b{color:transparent;-webkit-text-stroke:1px var(--muted)}
   }
 
+  .manifest{
+    font-family:var(--mono);
+    font-size:13px;
+    line-height:1.95;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;
+    margin:34px 0 26px;
+  }
+  .manifest span{display:block}
+  .manifest .cmd{color:var(--ink)}
+  .manifest .cmd b{color:var(--accent);font-weight:400}
+  .manifest .out{color:var(--muted)}
+
+  .cursor{
+    display:inline-block;
+    width:7px;
+    height:13px;
+    background:var(--accent);
+    vertical-align:-2px;
+    margin-left:5px;
+    animation:blink 1.15s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0}}
+
   .lede{
-    max-width:60ch;
+    max-width:58ch;
     color:var(--muted);
     margin:0;
   }
@@ -198,9 +230,13 @@
 <main class="wrap">
 
   <header class="top">
-    <p class="eyebrow">Md Farhan Rahman Anik <span>/</span> Credentials</p>
-    <h1>Certification records</h1>
-    <p class="lede">Three professional certifications, with the details needed to check each one independently. Where a credential can no longer be verified through the issuer, that is stated plainly below rather than left for you to discover.</p>
+    <p class="eyebrow">Farhan Rahman Anik <span>/</span> Credentials</p>
+    <h1><span class="h1-a">Certification</span><span class="h1-b">Records</span></h1>
+    <div class="manifest">
+      <span class="cmd"><b>~/credentials $</b> verify --all<i class="cursor" aria-hidden="true"></i></span>
+      <span class="out">3 records &middot; 2 verifiable at issuer &middot; 1 issuer no longer holds records</span>
+    </div>
+    <p class="lede">Details for checking each credential independently. Where a certification can no longer be verified through the issuer, that is stated plainly below rather than left for you to discover.</p>
   </header>
 
   <section class="records">
@@ -296,7 +332,7 @@
       </dl>
 
       <div class="route unavailable">
-        <span class="route-label">Why this credential cannot be verified</span>
+        <span class="route-label">Why there is no verification link</span>
         <p>This credential was listed in the Zend Yellow Pages directory at zend-zce.com. Zend paused its legacy certification program in 2023 and decommissioned that directory. Perforce, which acquired Rogue Wave and now owns Zend, has confirmed in writing that it no longer holds records for certifications issued before 31 August 2023 and cannot verify or reissue any of them.</p>
         <p>This applies to every holder of a pre-2023 Zend credential — it is not specific to this record. The original certificate is available for inspection on request, together with the Perforce correspondence confirming the above.</p>
       </div>
