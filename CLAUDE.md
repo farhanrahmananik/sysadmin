@@ -114,6 +114,17 @@ Structural rules:
   the dynamic 3D tilt described in motion-system item (7). This card is the
   page's one light surface — do not introduce another. On mobile it caps at
   320px and moves above the intro.
+- CV download link — **two elements, never both visible.** `.head-cta` is the
+  bordered button in the header bar and is `display:none` at `<=880px`;
+  `.nav-cta` is the last child of `<nav id="nav">`, `display:none` by default and
+  `display:block` only inside that same `<=880px` block. Keep the pair exclusive:
+  if both ever show, a screen reader reads the same link twice. `.nav-cta` is the
+  primary action in the burger menu, so it takes `--signal` text plus the 2px
+  amber left rail borrowed from `.term`, with `padding-left:calc(var(--pad) - 2px)`
+  so its label still lines up with the plain nav links above it. The menu's
+  `.nav.open{max-height}` is a hard ceiling — it is 420px for seven rows, so
+  adding a nav item means raising it or the new row is clipped. Both elements
+  exist on all three pages (`index.html`, `impressum.html`, `datenschutz.html`).
 - Contact form (`#cform`): name/email pair, subject, message, amber pill submit.
   The pill is the page's single border-radius exception; nothing else may be
   rounded. Submit builds a `mailto:` and opens the visitor's mail app — there is
