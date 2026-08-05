@@ -119,9 +119,13 @@ Structural rules:
   `.nav-cta` is the last child of `<nav id="nav">`, `display:none` by default and
   `display:block` only inside that same `<=880px` block. Keep the pair exclusive:
   if both ever show, a screen reader reads the same link twice. `.nav-cta` is the
-  primary action in the burger menu, so it takes `--signal` text plus the 2px
-  amber left rail borrowed from `.term`, with `padding-left:calc(var(--pad) - 2px)`
-  so its label still lines up with the plain nav links above it. The menu's
+  primary action in the burger menu, not a seventh link, so it is a filled block —
+  `background:var(--signal)`, `color:var(--ink-deep)`, full width, centred, 14px
+  mono (one step up from the 13px nav links), `padding:16px`, `border-top:0` to
+  drop the hairline the other rows carry, and `margin-top:14px` to separate it
+  from them. `border-radius:0`, like everything except the `#cform` send pill.
+  It also needs `:focus-visible{outline-color:var(--ink-deep)}`: the global focus
+  ring is `--signal`, which is invisible on an amber fill. The menu's
   `.nav.open{max-height}` is a hard ceiling — it is 420px for seven rows, so
   adding a nav item means raising it or the new row is clipped. Both elements
   exist on all three pages (`index.html`, `impressum.html`, `datenschutz.html`).

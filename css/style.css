@@ -264,12 +264,17 @@ section[id],#top{scroll-margin-top:80px}
   .nav a{padding:16px var(--pad);border-top:1px solid var(--line-soft);font-size:13px}
   .burger{display:block}
   .head-cta{display:none}
-  /* primary action in the menu: amber rail in the same style as .term */
+  /* primary action in the menu — a filled amber block, not a seventh link.
+     Square corners: the #cform send button is the site's only pill. */
   .nav .nav-cta{
-    display:block;color:var(--signal);
-    border-left:2px solid var(--signal);padding-left:calc(var(--pad) - 2px);
+    display:block;margin-top:14px;
+    background:var(--signal);color:var(--ink-deep);
+    padding:16px;border-top:0;border-radius:0;
+    font-size:14px;text-align:center;
   }
-  .nav .nav-cta:hover{color:var(--signal)}
+  .nav .nav-cta:hover{background:var(--signal);color:var(--ink-deep)}
+  /* the global amber focus ring would vanish on the amber fill */
+  .nav .nav-cta:focus-visible{outline-color:var(--ink-deep)}
 }
 
 /* ============================================================
