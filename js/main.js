@@ -70,7 +70,7 @@
   /* ---- hero console line ---- */
   var out = document.getElementById('termOut');
   if(out){
-    var text = 'systems engineer · security · laravel — available';
+    var text = 'systems engineer · security · automation — available';
     if(reduce){
       out.innerHTML = '<span class="ok">→</span> ' + text;
     } else {

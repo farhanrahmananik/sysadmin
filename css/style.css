@@ -463,6 +463,7 @@ section[id],#top{scroll-margin-top:80px}
 
 /* projects */
 .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
+.proj-grid > .proj:last-child:nth-child(odd){grid-column:1/-1}
 @media (max-width:760px){.proj-grid{grid-template-columns:1fr}}
 .proj{background:var(--ink);padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:12px;transition:background .25s;position:relative}
 .proj-thumb{flex:0 0 118px;border:1px solid var(--line-soft);overflow:hidden;line-height:0}
