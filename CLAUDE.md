@@ -27,6 +27,7 @@ the two external files. See **File structure** below.
 index.html              markup only — head, header, hero, sections, footer
 impressum.html          legal notice (§ 5 DDG) — see Legal pages below
 datenschutz.html        privacy policy (DSGVO) — see Legal pages below
+verify/index.html       credentials page — SELF-CONTAINED, see Credentials page below
 css/style.css           all CSS (was the inline <style> block)
 js/main.js              all JS (was the inline <script> block), loaded with defer
 assets/
@@ -283,6 +284,66 @@ holding two links: "View repository" (`data-repo`) and "Project page"
 They sit on one row separated by a `border-left: 1px solid var(--line)` hairline
 on the second link; `.proj-links{flex-wrap:wrap}` lets them drop to two rows on
 narrow viewports. Adding a project means adding both links, not just the repo one.
+
+## Credentials page (`verify/index.html`)
+
+**This page is self-contained and does not share the main site's CSS.** It has
+its own inline `<style>` block, its own `@font-face` rules (pointing at the same
+`../assets/fonts/*.woff2` files, so the zero-third-party-request guarantee still
+holds), and no JavaScript at all. It does not link `css/style.css` and does not
+load `js/main.js`. Keep it that way: it is a standalone document a recruiter may
+be sent directly, and the inline style block is deliberate here even though
+`index.html` forbids one.
+
+**The token names collide with `css/style.css` and mean different things.** Do
+not copy CSS rules, custom-property names, or colour values between the two
+files without translating them:
+
+| Token | `css/style.css` (main site) | `verify/index.html` |
+|---|---|---|
+| `--ink` | `#0B0C0E` — page **background** | `#E8E6E1` — **text** colour |
+| `--bg` | not defined | `#0B0C0E` — page background |
+| `--line` | `#23262C` | `#22262B` (close, not identical) |
+| `--accent` | not defined | `#D9A441` — same value as `--signal` |
+| `--signal` | `#D9A441` — amber accent | not defined |
+| `--surface` | not defined | `#121417` — raised panels |
+| `--muted` | not defined | `#8A8F97` — secondary text |
+
+The `--ink` inversion is the dangerous one: a rule reading `color: var(--ink)`
+is correct on the verify page and invisible-on-invisible if pasted into
+`css/style.css`. The two palettes are intentionally near-identical *visually* —
+same amber, same near-black — so the mistake will not look obviously wrong while
+editing.
+
+Components on the page (all defined in its own `<style>`): `.record` entries
+inside `.records`, each with a `.record-head` (an `h2` plus one `.issuer` mono
+chip — exactly one, don't add a second as a subtitle), a `dl`/`dt`/`dd` field
+list, and a `.route` note block with a `.route-label` heading. `.route` comes in
+two variants: the default amber left border for "here is how to verify this
+yourself", and `.route.unavailable` (muted left border) for anything that
+*cannot* be checked at the issuer — a decommissioned directory, or a document
+withheld for privacy. Pick the variant by meaning, not by looks. There is
+deliberately **no per-record counter and no in-page section nav** — four records
+don't need them, and the manifest line covers the count.
+
+Anchor ids follow a short lowercase slug of the credential:
+`#rhcsa`, `#rhce`, `#zcpe`, `#masters-enrollment`. Every `.record` carries one.
+There is no sticky header on this page, so no `scroll-margin-top` is needed —
+an anchor jump lands the record's top edge exactly at the viewport top.
+
+**Adding a record means updating the manifest line** in the header
+(`.manifest .out`) — currently `4 records · 2 verifiable at issuer · 1 issuer no
+longer holds records · 1 documented on request`. That line is the page's record
+count and its honesty summary in one; if it disagrees with the records below it,
+the page has lost the thing it exists for. Bump `.foot .updated` in the same
+edit.
+
+The Master's enrolment record must never name a semester, a season, or an
+expected graduation date — the user asked for an entry that stays accurate
+without seasonal maintenance. Certificate PDFs live in `assets/certs/`; the
+enrolment certificate is deliberately **not** among them (it carries enrolment
+number, date of birth, birthplace and a document verification code), which is
+what that record's Privacy note explains.
 
 ## Credentials logos
 
