@@ -250,9 +250,56 @@
     <div class="wrap">
       <div class="sec-head rv">
         <h2 class="sr-only">Projects</h2><span class="eyebrow"><span class="slash">/</span> Projects</span>
-        <span class="count">03</span>
+        <span class="count">05</span>
       </div>
       <div class="proj-grid rv">
+
+        <article class="proj">
+          <div class="proj-top">
+            <div class="proj-thumb"><img src="assets/projects/traffic-shape-client-detection.webp" width="1200" height="630" loading="lazy" alt="Traffic-Shape Client Detection — project cover" onerror="if(!this.dataset.f){this.dataset.f=1;this.src=this.src.replace('assets/images/projects/','assets/projects/')}else{this.closest('.proj-thumb').style.display='none'}"></div>
+            <div class="proj-head">
+              <h3 class="h3">Traffic-Shape Client Detection</h3>
+              <span class="proj-kind">Python / Detection</span>
+            </div>
+          </div>
+          <p>Decides whether an encrypted HTTPS page load came from a browser or an automated client
+             using only packet sizes, directions, inter-arrival times and burst structure — never
+             payload. Evaluated leave-one-round-out rather than on a random split, with SHAP
+             attribution computed on held-out rounds only. One feature that separated the classes
+             perfectly was measured, traced back to the capture harness, and deleted.</p>
+          <div class="taglist">
+            <span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">SHAP</span>
+            <span class="tag">PCAP</span><span class="tag">tcpdump</span><span class="tag">TLS</span>
+            <span class="tag">Feature Engineering</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/farhanrahmananik/traffic-shape-client-detection" target="_blank" rel="noopener" data-repo>View repository</a>
+            <a class="proj-link" href="https://farhanrahmananik.github.io/traffic-shape-client-detection/" target="_blank" rel="noopener" data-live>Project page</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <div class="proj-top">
+            <div class="proj-thumb"><img src="assets/projects/opnsense-firewall-vlan-vpn-lab.webp" width="1200" height="630" loading="lazy" alt="OPNsense Firewall, Segmentation &amp; VPN Lab — project cover" onerror="if(!this.dataset.f){this.dataset.f=1;this.src=this.src.replace('assets/images/projects/','assets/projects/')}else{this.closest('.proj-thumb').style.display='none'}"></div>
+            <div class="proj-head">
+              <h3 class="h3">OPNsense Firewall, Segmentation &amp; VPN Lab</h3>
+              <span class="proj-kind">Network / Firewall</span>
+            </div>
+          </div>
+          <p>An OPNsense firewall on Hyper-V routing five zones — WAN, LAN, DMZ, SOC/Test and a
+             WireGuard VPN — with least-privilege inter-zone policy, DHCP, DNS forwarding and NAT.
+             Every rule decision validated at three layers: firewall logs, client probes and tcpdump
+             correlation, documented as a claim-to-evidence index.</p>
+          <div class="taglist">
+            <span class="tag">OPNsense</span><span class="tag">Firewall</span><span class="tag">Network Segmentation</span>
+            <span class="tag">WireGuard</span><span class="tag">VPN</span><span class="tag">Hyper-V</span>
+            <span class="tag">tcpdump</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/farhanrahmananik/opnsense-firewall-vlan-vpn-lab" target="_blank" rel="noopener" data-repo>View repository</a>
+            <a class="proj-link" href="https://farhanrahmananik.github.io/opnsense-firewall-vlan-vpn-lab/" target="_blank" rel="noopener" data-live>Project page</a>
+          </div>
+        </article>
 
         <article class="proj">
           <div class="proj-top">
@@ -333,15 +380,15 @@
     <div class="wrap">
       <div class="sec-head rv">
         <h2 class="sr-only">Tech stack</h2><span class="eyebrow"><span class="slash">/</span> Tech stack</span>
-        <span class="count">49</span>
+        <span class="count">52</span>
       </div>
       <div class="stack-filter" role="group" aria-label="Filter tech stack by category">
-        <button type="button" class="chip active" data-filter="all" aria-pressed="true">All 49</button>
+        <button type="button" class="chip active" data-filter="all" aria-pressed="true">All 52</button>
         <button type="button" class="chip" data-filter="web" aria-pressed="false">Web 11</button>
         <button type="button" class="chip" data-filter="systems" aria-pressed="false">Systems 12</button>
-        <button type="button" class="chip" data-filter="tools" aria-pressed="false">Tools 9</button>
+        <button type="button" class="chip" data-filter="tools" aria-pressed="false">Tools 10</button>
         <button type="button" class="chip" data-filter="cloud" aria-pressed="false">Cloud 11</button>
-        <button type="button" class="chip" data-filter="security" aria-pressed="false">Security 6</button>
+        <button type="button" class="chip" data-filter="security" aria-pressed="false">Security 8</button>
       </div>
       <div class="stack rv">
         <div class="stack-row">
@@ -404,6 +451,11 @@
           <img src="assets/images/stack/python.svg" width="30" height="30" loading="lazy" alt="" onerror="this.parentElement.classList.add('noicon')">
           <span class="fb" aria-hidden="true">P</span>
           <span class="lbl">Python</span>
+        </div>
+        <div class="tile" data-cat="tools">
+          <img src="assets/images/stack/scikitlearn.svg" width="30" height="30" loading="lazy" alt="" onerror="this.parentElement.classList.add('noicon')">
+          <span class="fb" aria-hidden="true">SK</span>
+          <span class="lbl">scikit-learn</span>
         </div>
         <div class="tile" data-cat="systems">
           <img src="assets/images/stack/powershell-original.svg" width="30" height="30" loading="lazy" alt="" onerror="this.parentElement.classList.add('noicon')">
@@ -489,6 +541,16 @@
           <img src="assets/images/stack/wireshark.svg" width="30" height="30" loading="lazy" alt="" onerror="this.parentElement.classList.add('noicon')">
           <span class="fb" aria-hidden="true">W</span>
           <span class="lbl">Wireshark</span>
+        </div>
+        <div class="tile" data-cat="security">
+          <img src="assets/images/stack/opnsense.svg" width="30" height="30" loading="lazy" alt="" onerror="this.parentElement.classList.add('noicon')">
+          <span class="fb" aria-hidden="true">OP</span>
+          <span class="lbl">OPNsense</span>
+        </div>
+        <div class="tile" data-cat="security">
+          <img src="assets/images/stack/wireguard.svg" width="30" height="30" loading="lazy" alt="" onerror="this.parentElement.classList.add('noicon')">
+          <span class="fb" aria-hidden="true">WG</span>
+          <span class="lbl">WireGuard</span>
         </div>
         <div class="tile" data-cat="tools">
           <img src="assets/images/stack/virtualbox.svg" width="30" height="30" loading="lazy" alt="" onerror="this.parentElement.classList.add('noicon')">

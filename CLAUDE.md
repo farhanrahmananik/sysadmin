@@ -32,8 +32,8 @@ css/style.css           all CSS (was the inline <style> block)
 js/main.js              all JS (was the inline <script> block), loaded with defer
 assets/
   fonts/                 self-hosted woff2 subsets (latin + latin-ext) — see Fonts below
-  projects/              three project thumbnail WebPs (see Projects section)
-  images/stack/          all 42 tech-stack icons, self-hosted (see Tech stack section)
+  projects/              five project thumbnail WebPs (see Projects section)
+  images/stack/          all 45 tech-stack icons, self-hosted (see Tech stack section)
   images/logos/          btu.png, primeasia.png — processed university logos (see below)
 Md_Farhan_Rahman_Anik_CV.pdf
 ```
@@ -153,7 +153,7 @@ Quality floor, must survive every change:
 
 ## Tasks, in order
 
-1. **Remaining links.** All six project links, the hero-card GitHub profile link
+1. **Remaining links.** All ten project links, the hero-card GitHub profile link
    and LinkedIn are real. Still a placeholder (`href="#"`): the Xing profile —
    ask the user for the URL.
 2. **Project thumbnails — done.** See the **Projects section** below.
@@ -174,7 +174,7 @@ Quality floor, must survive every change:
    card built from the wordmark), and JSON-LD `Person` schema. (Favicon is done —
    see Design system below.)
 7. **Performance pass — done.** Fonts self-hosted as `woff2` subsets with
-   `font-display: swap` (Google Fonts request dropped); all 41 tech-stack icons
+   `font-display: swap` (Google Fonts request dropped); all 45 tech-stack icons
    self-hosted too (both CDNs dropped). Zero third-party requests on the page —
    see **Fonts** and **Tech stack section** below before adding anything that
    would reintroduce one. Lighthouse 95+ target not yet independently verified.
@@ -216,8 +216,8 @@ browser user-agent (Google only serves `woff2` to modern UAs), keep just the
 
 ## Tech stack section
 
-The Skills section is a logo tile grid (`.stack` / `.tile`): 49 tiles with a
-mono label each. All icons are self-hosted in `assets/images/stack/` (42 files
+The Skills section is a logo tile grid (`.stack` / `.tile`): 52 tiles with a
+mono label each. All icons are self-hosted in `assets/images/stack/` (45 files
 — no `cdn.simpleicons.org` or `cdn.jsdelivr.net` requests remain anywhere on
 the page). Tiles use `box-shadow: 0 0 0 1px var(--line-soft)` for hairlines
 (NOT a grid background) so a partially-filled last row leaves no dark patch.
@@ -233,15 +233,18 @@ real logo: download the SVG from its source into `assets/images/stack/`
 (matching filename pattern: plain slug for Simple Icons, e.g. `docker.svg`;
 `<slug>-<HEXCOLOR>.svg` for a recolored Simple Icons variant, e.g.
 `redhat-AEB4BE.svg`; the devicon filename as-is for devicon sources, e.g.
-`powershell-original.svg`) — never link back to a CDN.
+`powershell-original.svg`) — never link back to a CDN. Check Simple Icons
+before drawing a custom glyph: OPNsense looked like a glyph candidate but ships
+as `opnsense.svg` from `cdn.simpleicons.org/opnsense`, so no tenth glyph was
+added.
 
 Every tile also carries `data-cat="web|systems|tools|cloud|security"` — required
 by the mobile category filter (`.stack-filter`, `js/main.js`) even though desktop
 ignores it. Adding a tile means picking the right `data-cat` and updating that
-category's chip count (e.g. `Tools 9`) plus the `All 49` chip in the
-`.stack-filter` markup and the overall `49` in `.sec-head .count`. Current
-split: Web 11, Systems 12, Tools 9, Cloud 11, Security 6. On desktop
-(`>880px`) all 49 tiles live in a
+category's chip count (e.g. `Tools 10`) plus the `All 52` chip in the
+`.stack-filter` markup and the overall `52` in `.sec-head .count`. Current
+split: Web 11, Systems 12, Tools 10, Cloud 11, Security 8. On desktop
+(`>880px`) all 52 tiles live in a
 single `.stack-row` flex-wrap container with no category headings — this is
 deliberate: splitting it into per-category containers (as a prior iteration did)
 makes each chunk wrap independently and throws orphan partial rows into the
@@ -252,46 +255,61 @@ shows `<=880px`; category headings don't exist in the markup at all anymore.
 
 ## Projects section
 
-Three cards, in this order — all sysadmin/security work, no Laravel projects
+Five cards, in this order — all sysadmin/security work, no Laravel projects
 (the six Laravel/WooCommerce cards that used to live here were removed along
 with their thumbnails; don't reinstate them):
 
-1. **Windows Server Active Directory Lab** — kind `Windows / Identity`. Hyper-V
+1. **Traffic-Shape Client Detection** — kind `Python / Detection`. Decides
+   whether an encrypted HTTPS page load came from a browser or an automated
+   client from packet sizes, directions, inter-arrival times and burst structure
+   only — never payload. Evaluated leave-one-round-out rather than on a random
+   split, SHAP attribution computed on held-out rounds only; one perfectly
+   separating feature was traced back to the capture harness and deleted. Repo
+   `traffic-shape-client-detection`.
+2. **OPNsense Firewall, Segmentation & VPN Lab** — kind `Network / Firewall`.
+   OPNsense on Hyper-V routing five zones (WAN, LAN, DMZ, SOC/Test, WireGuard
+   VPN) with least-privilege inter-zone policy, DHCP, DNS forwarding and NAT;
+   every rule decision validated at three layers — firewall logs, client probes,
+   tcpdump correlation — documented as a claim-to-evidence index. Repo
+   `opnsense-firewall-vlan-vpn-lab`.
+3. **Windows Server Active Directory Lab** — kind `Windows / Identity`. Hyper-V
    lab: AD DS + DNS, domain-joined client, OU hierarchy, GPO security baseline,
    group-based SMB/NTFS least privilege validated across a nine-point matrix,
    Event Viewer auditing, read-only PowerShell validation, eight sanitised
    evidence screenshots. Repo `windows-server-active-directory-lab`.
-2. **Linux Infrastructure Automation Lab** — kind `Linux / Ansible`. Three-node
+4. **Linux Infrastructure Automation Lab** — kind `Linux / Ansible`. Three-node
    Ubuntu lab, one control node driving two servers via eight playbooks (users,
    packages, UFW baseline, SSH hardening, Nginx, backups, maintenance timers);
    8/8 syntax-valid, 7/8 idempotent, fourteen evidence screenshots. Repo
    `linux-ansible-infrastructure-lab`.
-3. **Email Header Analyzer** — kind `Python / SOC Tooling`. Zero-dependency CLI
+5. **Email Header Analyzer** — kind `Python / SOC Tooling`. Zero-dependency CLI
    reading a `.eml` and emitting one JSON verdict (headers + Received chain,
    auth results, domain alignment, URL hostname mismatches, attachment SHA-256),
    scored by 46 weighted rules; calibrated on seven real messages with the
    measured outcome — two false negatives included — published, not tuned away.
    Repo `email-header-analyzer`.
 
-The numbers in that copy (nine-point matrix, eight/fourteen screenshots, 8/7
-playbooks, 46 rules, two false negatives) come from the repositories themselves.
-If a repo changes, change the card — every claim has to stay defensible.
+The numbers in that copy (five zones, three validation layers, nine-point
+matrix, eight/fourteen screenshots, 8/7 playbooks, 46 rules, two false
+negatives) come from the repositories themselves. If a repo changes, change the
+card — every claim has to stay defensible.
 
-Section header: eyebrow "Projects", `.sec-head .count` is `03`. Both must move
+Section header: eyebrow "Projects", `.sec-head .count` is `05`. Both must move
 together with the card count.
 
 Thumbnails live in `assets/projects/<repo-slug>.webp` (note: `assets/projects/`,
 not `assets/images/projects/` — the inline `onerror` on each `<img>` rewrites the
 latter to the former as a fallback, which is why both paths appear in the
 markup). Each one is that project's own OG image, downloaded from its GitHub
-Pages site and converted with `ffmpeg -c:v libwebp -quality 82`; all three are
-under 40KB. Thumbnails stay small (`.proj-thumb`, 118px, 40:21) beside the
+Pages site and converted with `ffmpeg -c:v libwebp -quality 82`; all five are
+under 45KB. Thumbnails stay small (`.proj-thumb`, 118px, 40:21) beside the
 title — never full-width covers, the user explicitly rejected that.
 
 `.proj-grid` is a two-column grid. With an odd card count the last card would
 leave an empty `--line-soft` cell, so
 `.proj-grid > .proj:last-child:nth-child(odd){grid-column:1/-1}` makes it span
-the full width. Below 760px the grid is single-column and the rule is inert.
+the full width — verified at five cards (the fifth spans both columns at
+1400px). Below 760px the grid is single-column and the rule is inert.
 
 Each `.proj` card ends with a `.proj-links` row (not a bare `.proj-link` anymore)
 holding two links: "View repository" (`data-repo`) and "Project page"
